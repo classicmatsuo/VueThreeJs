@@ -1,0 +1,71 @@
+html, body, #app {
+  box-sizing: border-box;
+  font-family: arial;
+  letter-spacing: 2px;
+  height: 100%;
+  width: 100%;
+}
+
+canvas {
+  display: block;
+  left: 0;
+  position: fixed;
+  top: 0;
+}
+
+form {
+  border-right: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  min-width: 200px;
+  width: 20%;
+  z-index: 1;
+}
+
+.input-container {
+  flex: 1;
+  border-bottom: 1px solid grey;
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+}
+.input-container:last-of-type {
+  border-bottom: none;
+}
+
+input[type=checkbox] {
+  opacity: 0;
+  position: absolute;
+}
+input[type=checkbox]:checked + label {
+  background-color: #efefef;
+  font-weight: bold;
+}
+
+label {
+  cursor: pointer;
+  padding-left: 20px;
+  width: calc(100% - 20px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.buttonAdd {
+  display: flex;
+  width: 70%;
+}
+.buttonColumn {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+.buttonColumn .buttonIcon {
+  display: flex;
+  height: 100%;
+}
+.buttonColumn .buttonIcon select {
+  width: 100%;
+  height: 100%;
+}

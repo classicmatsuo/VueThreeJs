@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id='app'>
+    <form>
+      <div class="input-container"
+            v-for="item in streamerSection">
+        <div class="buttonAdd">
+          <input 
+                  type="checkbox" 
+                  v-model="selectedStreamerSections"
+                  :id="item.section" 
+                  :value="item.section"/>
+          <label :for="item.section">Add:<br>{{item.section}}</label>
+        </div>
+        
+        <div class="buttonColumn">
+          <div class="buttonIcon">
+            <select v-model="item.sectionColor">
+                <option disabled value="null">Select Color</option>
+              <option  v-for="color in colors"  :id="item.sectionColor" :value="color.hsl">
+                {{ color.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <canvas id="streamerJS"></canvas>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
+  <script src="https://codepen.io/classicmatsuo/pen/WNNQdrJ.js"></script>
+  <script src="https://unpkg.com/three-bas@2.0.2/dist/bas.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
