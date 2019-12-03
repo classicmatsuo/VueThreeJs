@@ -10,5 +10,6 @@ The fuzzy mesh texture is taken from [three-fuzzy-mesh](https://github.com/zadvo
 
 ### Local dev
 ```
+npm i
 http-server -p 8080
 ```
