@@ -5,11 +5,11 @@ new Vue({
     return {
       selectedStreamerSections: [],
       streamerSection: [
-        {section: 'Forward Hackle', sectionColor: null},
-        {section: 'Forward Station', sectionColor: null},
-        {section: 'Back Station', sectionColor: null},
-        {section: 'Gill Flare', sectionColor: null},
-        {section: 'Tail Hackle', sectionColor: null},
+        {section: 'Forward Hackle', sectionColor: null, toggle: "Add"},
+        {section: 'Forward Station', sectionColor: null, toggle: "Add"},
+        {section: 'Back Station', sectionColor: null, toggle: "Add"},
+        {section: 'Gill Flare', sectionColor: null, toggle: "Add"},
+        {section: 'Tail Hackle', sectionColor: null, toggle: "Add"},
       ],
       camera: '',
       scene: '',
@@ -72,10 +72,12 @@ new Vue({
       requestAnimationFrame(this.render);
       this.streamerSection.map(item => {
         if(!this.selectedStreamerSections.includes(item.section)){
-           this.scene.getObjectByName( item.section ).visible = false;
-        } else {
-           this.scene.getObjectByName( item.section ).setColor(item.sectionColor);
-           this.scene.getObjectByName( item.section ).visible = true;
+          this.scene.getObjectByName( item.section ).visible = false;
+          item.toggle = 'Add';
+       } else {
+          this.scene.getObjectByName( item.section ).setColor(item.sectionColor);
+          item.toggle = 'Remove';
+          this.scene.getObjectByName( item.section ).visible = true;
         }
       });
     },
