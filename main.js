@@ -5,11 +5,11 @@ new Vue({
     return {
       selectedStreamerSections: [],
       streamerSection: [
-        {section: 'Forward Hackle', sectionColor: null, toggle: "Add"},
-        {section: 'Forward Station', sectionColor: null, toggle: "Add"},
-        {section: 'Back Station', sectionColor: null, toggle: "Add"},
-        {section: 'Gill Flare', sectionColor: null, toggle: "Add"},
-        {section: 'Tail Hackle', sectionColor: null, toggle: "Add"},
+        {section: 'Forward Hackle', sectionColor: null, sectionSize: 1, toggle: "Add"},
+        {section: 'Forward Station', sectionColor: null, sectionSize: 1, toggle: "Add"},
+        {section: 'Back Station', sectionColor: null, sectionSize: 1, toggle: "Add"},
+        {section: 'Gill Flare', sectionColor: null, sectionSize: 1, toggle: "Add"},
+        {section: 'Tail Hackle', sectionColor: null, sectionSize: 1, toggle: "Add"},
       ],
       camera: '',
       scene: '',
@@ -20,7 +20,6 @@ new Vue({
       backStation: '',
       gillFlare: '',
       tailHackle: '',
-      hackleColor: '',
       colors: [
         {name: 'turquoise', hsl: 0x47debd},
         {name: 'white', hsl: 0xffffff },
@@ -34,12 +33,27 @@ new Vue({
         {name: 'red', hsl: 0xE73B1C },
         {name: 'yellow', hsl:  0xfff95d }
       ],
+      sizes: [
+        {name: '1', value: 1},
+        {name: '1.1', value: 1.1},
+        {name: '1.2', value: 1.2},
+        {name: '1.3', value: 1.3},
+        {name: '1.5', value: 1.5},
+      ],
     }
   },
   mounted() {
     this.initThreeScene();
   },
   methods: {
+    // updateSize: function(){
+    //   this.streamerSection.map(item => {
+    //     if(this.scene.getObjectByName( item.section ).scale !== 0){
+    //       this.scene.getObjectByName( item.section ).scale.set(item.sectionSize, item.sectionSize, item.sectionSize);
+    //       console.log("resized!");
+    //     }
+    //   })
+    // },
     init: function(){
       this.scene = new THREE.Scene();
       
@@ -64,7 +78,7 @@ new Vue({
       this.render();
     },
     animate: function() {
-      this.streamer.rotation.y += 0.005;
+      this.streamer.rotation.y += 0.0025;
     },
     render: function() {
       this.animate();
@@ -73,9 +87,14 @@ new Vue({
       this.streamerSection.map(item => {
         if(!this.selectedStreamerSections.includes(item.section)){
           this.scene.getObjectByName( item.section ).visible = false;
-          item.toggle = 'Add';
-       } else {
+            item.toggle = 'Add';
+        } else {
           this.scene.getObjectByName( item.section ).setColor(item.sectionColor);
+          // this.scene.getObjectByName( item.section ).scale.set(item.sectionSize, item.sectionSize, item.sectionSize);
+          // console.log(item.sectionSize);
+          if(this.scene.getObjectByName( item.section ).scale !== 0){
+            this.scene.getObjectByName( item.section ).scale.set(item.sectionSize, item.sectionSize, item.sectionSize);
+          }
           item.toggle = 'Remove';
           this.scene.getObjectByName( item.section ).visible = true;
         }
@@ -120,31 +139,35 @@ new Vue({
       this.light2.position.set(-0.125, -1, 0);
       this.streamer.add(this.light2);
       this.streamer.add(new THREE.AmbientLight(this.colors.white));
-     
+
       this.streamer.rotation.z = -Math.PI/2;
       this.streamer.rotation.x = 0.7;
       this.scene.add(this.streamer);
     },
-    makeForwardHackle: function() { 
+    makeForwardHackle: function() {
+      // this.initThreeScene();
       this.forwardHackle = new FuzzyMesh({
+        namo: 'fh',
         geometry: new THREE.SphereGeometry(1, 10, 10),
         materialUniformValues: {
           roughness: 1.0
         },
         config: {
-          hairLength: 4,
+          // hairLength: 10,
           hairRadiusBase: 0.5,
           hairRadialSegments: 3,
           gravity: -5,
           fuzz: 0.5,
         }
       });
-      
+      // console.log(this.forwardHackle.config.hairLength);
+      // console.log("this.forwardHackle.config.hairLength " + this.forwardHackle.config.hairLength);
+      // this.forwardHackle.config.hairLength = item.sectionSize;
       this.forwardHackle.position.y = -3.5;
       this.forwardHackle.name = 'Forward Hackle';
       this.streamer.add(this.forwardHackle);
     },
-    makeForwardStation: function() {  
+    makeForwardStation: function() {      
       this.forwardStation = new FuzzyMesh({
         geometry: new THREE.SphereGeometry(1, 5, 5),
         materialUniformValues: {
@@ -159,13 +182,11 @@ new Vue({
         }
       });
       
-      this.forwardStation.setColor(this.colors.orange);
-      
       this.forwardStation.position.y = -2.5;
       this.forwardStation.name = 'Forward Station';
       this.streamer.add(this.forwardStation);
     },
-    makeBackStation: function() { 
+    makeBackStation: function() {  
       this.backStation = new FuzzyMesh({
         geometry: new THREE.SphereGeometry(0.6, 5, 5),
         materialUniformValues: {
@@ -180,13 +201,11 @@ new Vue({
         }
       });
       
-      this.backStation.setColor(this.colors.ltgreen);
-      
       this.backStation.position.y = 1;
       this.backStation.name = 'Back Station';
       this.streamer.add(this.backStation);
     },
-    makeGillFlare: function() { 
+    makeGillFlare: function() {      
       this.gillFlare = new FuzzyMesh({
         geometry: new THREE.SphereGeometry(0.5, 5, 20),
         materialUniformValues: {
@@ -200,8 +219,6 @@ new Vue({
           fuzz: 0.25,
         }
       });
-      
-      this.gillFlare.setColor(this.colors.red);
       
       this.gillFlare.position.y = 3;
       this.gillFlare.name = 'Gill Flare';
@@ -220,9 +237,7 @@ new Vue({
           gravity: -40,
           fuzz: 0.25,
         }
-      });
-      
-      this.tailHackle.setColor(this.colors.black);     
+      });   
       
       this.tailHackle.position.x = 0;
       this.tailHackle.position.y = 5;

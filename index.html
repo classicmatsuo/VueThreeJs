@@ -30,6 +30,8 @@
               </option>
             </select>
           </div>
+          <input v-model="item.sectionSize" type="range" :id="item.sectionSize" name="size" min="0.5" max="2.5" step="0.25">
+          <label for="volume">Size</label>
         </div>
       </div>
     </form>
@@ -37,8 +39,10 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
-  <script src="https://codepen.io/classicmatsuo/pen/WNNQdrJ.js"></script>
+  <script src="./fuzzymesh.js"></script>
   <script src="https://unpkg.com/three-bas@2.0.2/dist/bas.min.js"></script>
   <script src="main.js"></script>
+
+
 </body>
 </html>
